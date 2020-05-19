@@ -1,0 +1,17 @@
+{
+  "name": "app",
+  "main": "index.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.0",
+    "paper-card": "PolymerElements/paper-card#^2.0.0",
+    "profile-card": "vic10us/profile-card#^2.0.1",
+    "list-item": "ryanburns23/list-item#^2.0.4",
+    "iron-image": "PolymerElements/iron-image#^2.0.0",
+    "flip-card": "MarkJamesHoward/flip-card#^0.3.6"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  }
+}

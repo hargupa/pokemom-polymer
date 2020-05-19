@@ -1,0 +1,105 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/list-item/list-item.html">
+<link rel="import" href="./pantalla-pokemon.html">
+<link rel="import" href="./imagen-pokemon.html">
+
+<dom-module id="listado-pokemon">
+  <template>
+    <style>
+        :host {
+          display: block;
+        }
+        .lista{
+          position: absolute;
+          top:20px;
+          width: 230px;
+          height: 550px;
+          overflow:scroll;
+          overflow-x: hidden;
+          left:80px;
+          background-color: burlywood;
+          padding-left:30px;
+        }
+  
+    </style>
+
+    <!--Conexion API-->
+    <iron-ajax
+        auto
+        url="https://pokeapi.co/api/v2/pokemon"
+        handle-as="json"
+        last-response="{{dataPokemon}}">
+    </iron-ajax>
+      
+    <!--Mostrar listado de los Pokemones-->
+    <div class="lista">
+      <template  is="dom-repeat" items="[[arreglodatos]]" >
+          <pantalla-pokemon
+            nombre="[[item.name]]"
+            urlimagen="[[item.url]]"
+            on-marcada="seleccionadoOpcion"
+          ></pantalla-pokemon>
+              
+      </template>
+    </div>   
+
+    <!--Envio de url a la pantalla de Imagen del pokemon-->  
+      <imagen-pokemon 
+          urlpokemonrecibido = "[[urlpokemon]]"
+      ></imagen-pokemon>
+
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class ListadoPokemo extends Polymer.Element {
+      static get is() { return 'listado-pokemon'; }
+      static get properties() {
+        return {
+          dataPokemon: {
+            type: String,
+            observer: '_ArrayLista'
+          },
+          arreglodatos: {
+            type: Array,
+            value: function(){
+              return[];
+            },
+          urlpokemon:{
+            type: String,
+
+          },
+      
+          }
+          
+        };
+      
+      }
+      _ArrayLista(dataPokemon) {
+        this.arreglodatos = this.dataPokemon.results;
+      } 
+      ready(){
+            super.ready();
+            this.addEventListener('click',this.procesaClick.bind(this));
+        }
+        procesaClick(){
+            console.log('click producido' );
+
+        }        
+        seleccionadoOpcion(e){
+        console.log('Se ha seleccionado alguna opcion' );
+        this.urlpokemon = e.detail.urlimagen;
+      } 
+ 
+    }
+
+    window.customElements.define(ListadoPokemo.is, ListadoPokemo);
+  </script>
+</dom-module>

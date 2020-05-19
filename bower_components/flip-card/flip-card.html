@@ -1,0 +1,148 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`flip-card`
+3d Flip Card
+
+@demo demo/index.html
+-->
+
+<dom-module id="flip-card">
+ 
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      * {
+        box-sizing: border-box;
+      }
+
+      button {
+        margin-bottom: 20px;
+      }
+
+      #container {
+        width: 100%;
+        height: 100%;
+        perspective: 800px; 
+      }
+
+      #card {
+        width: 100%;
+        height: 100%;
+        transition: 1s all ease-in-out;
+        transform-style: preserve-3d;
+        position: relative;
+        backface-visibility: hidden;
+        border-radius: 5px;
+        box-shadow: 2px 2px 10px black;
+      }
+
+      .front, .back {
+        top:0;
+        left:0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+      }
+     
+      .front {
+        background-color: lightcoral;
+      }
+
+      .back {
+        background: linear-gradient(to right, #888888, #888877);
+        transform: rotateY(180deg);
+      }
+
+      .flipped {
+        transform: rotateY(180deg);
+      }
+
+      .cardNumber {
+        font-size: 24px;
+      }
+
+    </style>
+
+    <button hidden="false" on-click="FlipMe"> Do Flip </button>
+    
+
+    <div id="container" style="height: 100%">
+      <div id="card">
+        <div id="frontface" class="front">
+          <slot style="pointer-events: none" name="front">
+            Front Default
+          </slot>
+        </div>
+        <div id="backface" class="back">
+          <slot style="pointer-events: none" name="back">
+            Back Default
+          </slot>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+
+
+    class FlipCard extends Polymer.Element {
+     constructor() {
+       super();
+     }
+
+    UnFlipMe(unflipafter){    
+       console.log('flipped changed');   
+       this.$.card.classList.remove('flipped');
+
+       if (unflipafter === true) {
+       setTimeout(() => {
+         this.$.card.classList.toggle('flipped');
+       }, 2000)
+       }
+     }
+
+     FlipMe(unflipafter){    
+       console.log('flipped changed');   
+       this.$.card.classList.toggle('flipped');
+
+       if (unflipafter === true) {
+       setTimeout(() => {
+         this.$.card.classList.toggle('flipped');
+       }, 2000)
+       }
+     }
+
+     static get config() {
+       return {
+         properties : {
+           flipBackAfterFlipTime : {type: Boolean},
+           flipped : { type: Boolean},
+           flipTime : {type: Number},
+           demo: {type: Boolean}
+         }
+       }
+     }
+
+     static get is() {
+       return 'flip-card';
+     }
+
+     connectedCallback() {
+       super.connectedCallback();
+       
+     }
+
+   }
+
+    window.customElements.define(FlipCard.is, FlipCard);
+
+  </script>
+</dom-module>

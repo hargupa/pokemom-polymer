@@ -1,0 +1,161 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/list-item/list-item.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html" />
+
+<dom-module id="imagen-pokemon">
+  <template>
+        <style>
+            :host {
+                display: block;
+            }
+            .div-card{
+                position:absolute;
+                left:450px;
+                top:50px;
+            }
+            paper-card{
+                width: 450px;
+                height: 450px;
+                background-color: burlywood;
+            }
+            .imagen{
+                width: 200px;
+                height: 200px;
+
+            }
+            .card-content{
+                text-align: center;
+            }
+            .datospokemonder{
+                position: absolute;
+                top: 30px;
+                left: 50px;
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+            }
+            .datospokemonizq{
+                position: absolute;
+                top: 30px;
+                left: 250px;
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+            }
+            .calificador{
+                position:absolute;
+                left: 950px;
+                top:100px;
+                
+            }
+            .boton{
+                position: relative;
+                top:500px;
+                left:450px;
+            }            
+        </style>
+
+
+        <!--Conexion API-->
+        <iron-ajax
+            id="ajax"
+            url="[[urlpokemonrecibido]]"
+            handle-as="json"
+            last-response="{{dataPokemonImagen}}">
+        </iron-ajax>
+        
+        <div class="div-card">
+              <paper-card class="rate">
+                <div class="card-content">
+                    <h2>[[dataPokemonImagen.name]]</h2>
+                    <iron-image sizing="contain"  src="[[dataPokemonImagen.sprites.front_shiny]]" class="imagen"></iron-image>
+                </div>
+                <div class="card-actions">
+                    <template is="dom-if" if="[[dataPokemonImagen.name]]">
+                        <div class="datospokemonder">
+                            <p>Experiencia:[[dataPokemonImagen.base_experience]] </p>
+                            <p>Altura:[[dataPokemonImagen.height]] </p>
+                        </div>
+                        <div class="datospokemonizq">    
+                            <p>Peso:[[dataPokemonImagen.weight]] </p>
+                            <p>Especie:[[dataPokemonImagen.species.name]] </p>
+                        </div>
+
+                    </template>
+                </div>
+                <div class="rate-image"></div>
+              </paper-card>
+              
+        </div>
+        <div class="boton">
+            <button on-click="calificar">Saber Calificacion</button>
+        </div>
+        
+        <div class="calificador">
+           <template is="dom-if" if="[[mal]]">
+                <iron-image sizing="contain"  src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQwZcFrwE23ayVzEmtIbzp3wsjgaRhJFYNEM3PD8sXOcpHua1yB&usqp=CAU" class="imagen"></iron-image>
+           </template>
+           <template is="dom-if" if="[[bien]]">
+                <iron-image sizing="contain"  src="https://lh3.googleusercontent.com/proxy/L9mW13jM6PKKBwbqJBb24JCQ3C9Tu_OGwkjx9bxW5h6sBOOjnX-zfwIwWtbAYILaN9XzRod9P8nCyP-Pel4so3cmcvdrHuhi1TjuEJCilmL4k6iHcb3zrtDdhGhialGU5ag0gkJ5" class="imagen"></iron-image>
+           </template>
+            
+           
+        </div>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class ImagenPokemon extends Polymer.Element {
+      static get is() { return 'imagen-pokemon'; }
+      static get properties() {
+        return {
+            urlpokemonrecibido: {
+                type: String,
+                observer: '_urlRecibio'
+            },
+          dataPokemonImagen: {
+            value: function(){
+              return[];
+            }
+          },
+
+          experiencia:{
+              type:Number,
+              computed: '_analizarExperiencia(experiencia)'
+          },
+          
+        };
+      
+      }
+      _urlRecibio() {
+        this.urlpokemonrecibido = this.urlpokemonrecibido;
+        this.$.ajax.generateRequest();
+        this.mal=false;
+        this.bien=false;
+      }
+      
+      _analizarExperiencia(exp){
+          console.log(this.experiencia);
+          if(parseInt(this.experiencia)<127){
+                this.mal=true;
+                this.bien=false;
+                
+          }else{
+                this.mal=false;
+                this.bien=true;              
+          }
+          return this.experiencia;
+          
+      }
+      calificar(){
+          this.experiencia = this.dataPokemonImagen.base_experience;
+      }
+ 
+    }
+
+    window.customElements.define(ImagenPokemon.is, ImagenPokemon);
+  </script>
+</dom-module>

@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="../../bower_components/iron-image/iron-image.html" />
+<link rel="import" href="../../bower_components/list-item/list-item.html">
+<dom-module id="pantalla-pokemon">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      list-item{
+        width: 150px;
+        background-color:cadetblue;
+        text-align: center;
+        cursor:pointer;
+
+      }      
+    </style>
+    
+    <list-item  on-click="enviarInformacion"  headline="[[nombre]]">
+    </list-item>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class PantallaPokemon extends Polymer.Element {
+      static get is() { return 'pantalla-pokemon'; }
+      static get properties() {
+        return {
+          nombre: {
+            type: String
+          },
+          urlimagen: String,
+          marcada: {
+                type: Boolean,
+                value: false,
+                reflectToAttribute: true
+            },          
+        };
+      
+      }
+
+      mostraInformacion() {
+        this.dispatchEvent(new CustomEvent('dataPokemon',{
+          detail: {
+            nombre: this.nombre,
+          }
+        }))
+      }        
+
+      enviarInformacion() {
+
+            this.marcada = !this.marcada;
+            this.dispatchEvent(new CustomEvent('marcada',{
+              detail: {
+                nombre: this.nombre,
+                urlimagen: this.urlimagen,
+
+              }
+            }))
+      }          
+ 
+    }
+
+    window.customElements.define(PantallaPokemon.is, PantallaPokemon);
+  </script>
+</dom-module>

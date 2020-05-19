@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>3d Flip Card Demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../flip-card.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    
+    flip-card {
+        height: 200px;
+        width: 200px;
+        margin: 30px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic flip-card demo</h3>
+      <demo-snippet>
+        <template>
+          <flip-card demo="true"></flip-card>
+
+           <flip-card  demo="true">
+                <img style="width:50px" src="../images/rogue.jpg" />
+                <img style="width:50px" src="../images/rogue.jpg" />
+           </flip-card>
+
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
